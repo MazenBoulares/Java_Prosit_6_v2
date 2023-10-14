@@ -1,0 +1,165 @@
+package tn.tuniprob.gestionmagasin;
+
+import tn.tuniprob.gestionproduit.Produit;
+
+public class Magasin {
+    private int id;
+    private String adress;
+    private int capacity;
+
+    private Produit[] tab;
+
+    //the number of products ( dans une seulke magasin)
+    private int n;
+
+    private static int nbProdGlobale;
+
+    public Magasin(int id, String adress, int capacity) {
+        tab = new Produit[50];
+        this.n = 0;
+
+        this.id = id;
+        this.adress = adress;
+        this.capacity = capacity;
+    }
+
+/*
+    public void ajouterProduit(Produit p) {
+        if (this.n <= 50) {
+            tab[n] = p;
+            this.n = this.n + 1;
+            System.out.println(this.n);
+            this.nbProdGlobale = this.nbProdGlobale + 1;
+        } else {
+            System.out.println("la magasin a atteint sont capcité max ");
+        }
+    }
+*/
+
+    //afficher les caractéristiques du magasin
+    public void afficherCaracter() {
+        System.out.println(id + "   " + adress + "   " + capacity);
+
+        System.out.println(this.n);
+
+
+        System.out.println("test test");
+
+        for (int i = 0; i < this.n; i++) {
+
+            tab[i].afficher();
+
+        }
+
+
+    }
+
+
+    //recuperer nombre total de
+    //tous les produits dans tous les magasins.
+    public int getnbProdGlobale() {
+        return this.nbProdGlobale;
+
+    }
+
+
+    // Prosit N°3
+
+    /* 1) Créer une méthode qui permet de tester la conformité de produits, */
+
+    //façon 2 : 2 parametres
+    public boolean comparer(Produit p1, Produit p2) {
+        if ((p1.getId() == p2.getId()) && (p1.getLib().equals(p2.getLib())) && (p1.getPrix() == p2.getPrix())) {
+            return true;
+
+        } else
+            return false;
+    }
+
+
+    //2) Ajouter une autre méthode qui sert à chercher un produit dans un magasin
+
+    public boolean recherche(Produit p) {
+        if (n > 0) {
+
+            int i = 0;
+
+            while ((i < n) && (!this.comparer(tab[i], p))) {
+                i++;
+            }
+
+            //  if (tab[i].getId() == p.getId())
+            if (this.comparer(tab[i], p))
+                return true;
+            else
+                return false;
+        } else
+
+            return false;
+    }
+
+
+    //3) Modifier la méthode afin d’ajouter un produit donné une seule fois
+    public void ajouterProduit(Produit p) {
+        if (this.n <= 50) {
+
+            if (this.recherche(p) == false) {
+                tab[n] = p;
+                this.n = this.n + 1;
+                System.out.println(this.n);
+                this.nbProdGlobale = this.nbProdGlobale + 1;
+
+            } else
+                System.out.println("produit exist dséja dans le magasin ! ");
+        } else {
+            System.out.println("la magasin a atteint sont capcité max ");
+        }
+    }
+
+
+    //4) Ajouter une méthode qui permet de supprimer un produit du magasin
+    public void supprimerProduit(Produit p) {
+        int i = 0;
+        while ((i < n) && (!comparer(tab[i], p))) {
+            i++;
+        }
+        //  l'element exist
+        if (this.comparer(tab[i], p)) {
+
+            //Creation d'un nouveau array
+            Produit[] tab2 = new Produit[capacity - 1];
+
+            int j = 0;
+            for (int k = 0; i < n; i++) {
+
+                if (!comparer(tab[k], p)) {
+
+                    tab2[j] = tab[k];
+                }
+                j++;
+            }
+            //on a creerer un nouveau array qui contient tous les elements sauf le produit qu'on veut supprimer
+            this.tab = tab2;
+        }
+
+    }
+
+
+    //5) Créer une méthode qui retourne le magasin ayant un nombre supérieur de produits entre
+    //deux magasins
+    public int getN() {
+        return this.n;
+
+    }
+
+
+    public Magasin comparerNbProd(Magasin m1) {
+        if (this.n > m1.getN()) {
+            return m1;
+
+        } else
+            return this;
+    }
+
+
+}
